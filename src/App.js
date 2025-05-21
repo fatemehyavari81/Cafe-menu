@@ -1,33 +1,23 @@
-import React, { useState } from 'react';
-import Menu from './Menu';
-import Categories from './Categories';
-import items from './data';
-const allCategories = ['all', ...new Set(items.map((item) => item.category))];
-
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+// import pages
+import Home from './pages/Home';
+import About from './pages/About';
+import SingleCocktail from './pages/SingleCocktail';
+import Error from './pages/Error';
+// import components
+import Navbar from './components/Navbar';
 function App() {
-  const [menuItems, setMenuItems] = useState(items);
-  const [categories, setCategories] = useState(allCategories);
-
-  const filterItems = (category) => {
-    if (category === 'all') {
-      setMenuItems(items);
-      return;
-    }
-    const newItems = items.filter((item) => item.category === category);
-    setMenuItems(newItems);
-  };
-
   return (
-    <main>
-      <section className="menu section">
-        <div className="title">
-          <h2>our menu</h2>
-          <div className="underline"></div>
-        </div>
-        <Categories categories={categories} filterItems={filterItems} />
-        <Menu items={menuItems} />
-      </section>
-    </main>
+    <Router>
+      <Navbar />
+      <Routes>
+        <Route path='/' element={<Home />} />
+        <Route path='about' element={<About />} />
+        <Route path='cocktail/:id' element={<SingleCocktail />} />
+        <Route path='*' element={<Error />} />
+      </Routes>
+    </Router>
   );
 }
 
